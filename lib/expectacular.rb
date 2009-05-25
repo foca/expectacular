@@ -1,5 +1,9 @@
 module Expectacular
   class Expectation
+    instance_methods.each do |method|
+      undef_method method unless method.to_s =~ /^__/
+    end
+
     def initialize(object, test_case)
       @object = object
       @test_case = test_case
@@ -12,6 +16,8 @@ module Expectacular
     def not_to
       Matcher.new(@object, @test_case, false)
     end
+
+    private
 
     def method_missing(message, *args, &block)
       to.send(message, *args, &block)
@@ -32,6 +38,8 @@ module Expectacular
     def be
       self
     end
+
+    private
 
     def assert!(result, failure_message)
       test_succeeded = (@positive_assertion && result) || 
