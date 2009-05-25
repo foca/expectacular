@@ -36,6 +36,7 @@ you can call several methods to test the behavior of your objects.
 Expectacular comes with some assertions bundled:
 
 * Predicates (<tt>be_foo</tt> to check that <tt>foo?</tt> returns true)
+* <tt>be_a(Foo)</tt> to test ancestorship (<tt>is_a?(Foo)</tt>)
 
 Whenever you call a method that is not one of the above, the method (and any
 arguments) get forwared to the object in which you set the expectation, and the

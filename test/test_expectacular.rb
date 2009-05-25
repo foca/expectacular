@@ -59,27 +59,14 @@ class TestExpectacular < ExpectacularTestCase
       expect(stub_test_case.failures).to == 0
     end
 
-    test "can use the #be_foo form to check for foo? == true" do
-      mock_expectation_for(0) {|e| e.to.be_zero }
-
-      expect(stub_test_case.assertions).to == 1
-      expect(stub_test_case.failures).to == 0
-    end
-
     test "can use the #be sugar for clarity" do
-      mock_expectation_for(0) {|e| e.to.be.zero? }
+      mock_expectation_for(0) {|e| e.to.be >= 0 }
 
       expect(stub_test_case.assertions).to == 1
       expect(stub_test_case.failures).to == 0
     end
 
     context "generating failure messages" do
-      test 'uses the "expected #{object} to be #{expected}" when using the be_foo form' do
-        mock_expectation_for(1) {|e| e.to.be_zero }
-
-        expect(stub_test_case.failure_messages.first).to == "Expected 1 to be zero"
-      end
-
       test 'uses the "expected #{object} to #{message} with #{args} when using the normal form' do
         mock_expectation_for(2) {|e| e.to.be > 4 }
 
