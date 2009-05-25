@@ -1,0 +1,101 @@
+= Expectacular
+
+A small DSL to write meaningful assertions on your test/unit tests.
+
+== Usage
+
+    require "expectacular"
+
+    class TestFoo < Test::Unit::TestCase
+      include Expectacular::TestCaseMethods
+
+      def test_obviousness
+        expect(1).to == 1
+	expect(5).to.be > 3
+	expect(nil).to.be_nil
+	expect(5).not_to == 4
+      end
+    end
+
+== Expectations
+
+Including <tt>Expectacular::TestCaseMethods</tt> will add your test cases a
+single method: <tt>expect</tt>, which takes any object as an argument and
+returns an <tt>Expectacular::Expectation</tt> in return. You can do assertions
+on expectations, by calling the methods <tt>Expectation#to</tt> and 
+<tt>Expectation#not_to</tt>.
+
+    expect(1).to == 1
+    expect(3).not_to == 0
+
+<tt>to</tt> and <tt>not_to</tt> return an <tt>Assertion</tt>. In its context
+you can call several methods to test the behavior of your objects.
+
+== Assertions
+
+Expectacular comes with some assertions bundled:
+
+* Predicates (<tt>be_foo</tt> to check that <tt>foo?</tt> returns true)
+
+Whenever you call a method that is not one of the above, the method (and any
+arguments) get forwared to the object in which you set the expectation, and the
+result is treated as the assertion (if it returns true the test is considered
+to pass, if it returns false it considers the assertion to fail -- unless you
+are using <tt>not_to</tt>, in which case it's the other way around.)
+
+For example, Expectacular doesn't define any operator assertions, those are
+forwarded to the object you're setting expectations on. So the following:
+
+    expect(foo).to =~ /bar/
+    expect(foo).not_to == "bars"
+
+Just calls <tt>foo =~ /bar/</tt> and <tt>!(foo == "bars")</tt> and makes an
+assertion for each of those.
+
+== Writing your own assertions it's stupidly easy
+
+    module MyAwesomeAssertion
+      THRESHOLD = 10_000
+
+      def be_very_awesome
+        assert(object.awesomeness >= THRESHOLD,
+	       "Expected #{object} to be very awesome")
+      end
+    end
+
+    Expectacular::Assertion.add MyAwesomeAssertion
+
+    expect(foo).to.be_very_awesome
+
+Assertions have access to the following two methods:
+
+<tt>object</tt>:: which returns the object on which you're setting the 
+                  expectation.
+<tt>assert</tt>:: which takes a boolean value and a failure message.
+
+You can also pass a block to <tt>Assertion.add</tt> with the method 
+definitions, so the above example could also be written as:
+
+    Expectacular::Assertion.add do
+      THRESHOLD = 10_000
+
+      def be_very_awesome
+        assert(object.awesomeness >= THRESHOLD,
+               "Expected #{object} to be very awesome")
+      end
+    end
+
+    expect(foo).to.be_very_awesome
+
+== Why?
+
+Mostly, as an experiment, also, I usually don't like libraries that mess around
+with core classes, so this one doesn't :)
+
+== Credits
+
+Thanks to Daniel Cadenas (github[http://github.com/dcadenas]) for design and 
+syntax ideas.
+
+Author:: Nicolás Sanguinetti (github[http://github.com/foca])
+License:: MIT. See attached LICENSE file for details.
