@@ -1,50 +1,6 @@
-require "test/unit"
-require "contest"
-require File.dirname(__FILE__) + "/../lib/expectacular"
+require File.dirname(__FILE__) + "/test_helper"
 
-begin
-  require "redgreen"
-rescue LoadError
-end
-
-class StubTestCase
-  def initialize
-    @assertions = 0
-    @failures = []
-  end
-
-  attr_reader :assertions
-
-  def add_assertion
-    @assertions += 1
-  end
-
-  def add_failure(message)
-    @failures << message
-  end
-
-  def failures
-    @failures.size
-  end
-
-  def failure_messages
-    @failures
-  end
-end
-
-class TestExpectacular < Test::Unit::TestCase
-  include Expectacular::TestCaseMethods
-
-  attr_reader :stub_test_case
-
-  setup do
-    @stub_test_case = StubTestCase.new
-  end
-
-  def mock_expectation_for(object)
-    yield Expectacular::Expectation.new(object, stub_test_case)
-  end
-
+class TestExpectacular < ExpectacularTestCase
   context "reporting back to the test case" do
     test "a met expectation adds an assertion, but not a failure" do
       mock_expectation_for(1) {|e| e.to == 1 }
