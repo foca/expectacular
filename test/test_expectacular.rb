@@ -33,6 +33,8 @@ class StubTestCase
 end
 
 class TestExpectacular < Test::Unit::TestCase
+  include Expectacular::TestCaseMethods
+
   attr_reader :stub_test_case
 
   setup do

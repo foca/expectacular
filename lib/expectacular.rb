@@ -67,7 +67,7 @@ module Expectacular
     end
   end
 
-  class ::Test::Unit::TestCase
+  module TestCaseMethods
     def expect(object)
       Expectacular::Expectation.new(object, self)
     end
