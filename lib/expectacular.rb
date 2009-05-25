@@ -1,3 +1,5 @@
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
+
 module Expectacular
   class Expectation
     instance_methods.each do |method|
@@ -55,15 +57,11 @@ module Expectacular
     end
 
     def method_missing(message, *args, &block)
-      if message.to_s =~ /^be_(.*)$/
-        failure_message  = "Expected #{@object.inspect} to be #{$1}"
-        failure_message += " with #{args.join(", ")}" unless args.empty?
-        assert @object.send("#{$1}?", *args, &block), failure_message
-      else
-        failure_message  = "Expected #{@object.inspect} to #{message}"
-        failure_message += " with #{args.join(", ")}" unless args.empty?
-        assert @object.send(message, *args, &block), failure_message
-      end
+      super
+    rescue NoMethodError
+      failure_message  = "Expected #{@object.inspect} to #{message}"
+      failure_message += " with #{args.join(", ")}" unless args.empty?
+      assert @object.send(message, *args, &block), failure_message
     end
   end
 
@@ -73,3 +71,5 @@ module Expectacular
     end
   end
 end
+
+require "expectacular/be_predicate"
