@@ -78,13 +78,6 @@ class TestExpectacular < Test::Unit::TestCase
   end
 
   context "positive expectations" do
-    test "can be done straight on the expected object" do
-      mock_expectation_for(1) {|e| e == 1 }
-
-      expect(stub_test_case.assertions).to == 1
-      expect(stub_test_case.failures).to == 0
-    end
-
     test "can be done on the #to proxy" do
       mock_expectation_for(1) {|e| e.to == 1 }
 
@@ -104,7 +97,7 @@ class TestExpectacular < Test::Unit::TestCase
 
   context "when asserting" do
     test "can assert for any message the object understands" do
-      mock_expectation_for(0) {|e| e.is_a?(Numeric) }
+      mock_expectation_for(0) {|e| e.to.is_a?(Numeric) }
 
       expect(stub_test_case.assertions).to == 1
       expect(stub_test_case.failures).to == 0

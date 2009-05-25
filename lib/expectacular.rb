@@ -2,10 +2,6 @@ $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
 
 module Expectacular
   class Expectation
-    instance_methods.each do |method|
-      undef_method method unless method.to_s =~ /^__/
-    end
-
     def initialize(object, test_case)
       @object = object
       @test_case = test_case
@@ -17,12 +13,6 @@ module Expectacular
 
     def not_to
       Assertion.new(@object, @test_case, false)
-    end
-
-    private
-
-    def method_missing(message, *args, &block)
-      to.send(message, *args, &block)
     end
   end
 
@@ -51,7 +41,7 @@ module Expectacular
     private
 
     def assert(result, failure_message)
-      test_succeeded = (@positive_assertion && result) || 
+      test_succeeded = (@positive_assertion && result) ||
         (!@positive_assertion && !result)
 
       @test_case.send :add_failure, failure_message unless test_succeeded
