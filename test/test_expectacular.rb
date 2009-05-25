@@ -137,33 +137,33 @@ class TestExpectacular < Test::Unit::TestCase
     end
   end
 
-  context "adding new matchers" do
-    module CustomMatcher
+  context "adding new assertions" do
+    module CustomAssertion
       class << self
         attr_accessor :called
       end
 
       def be_able_to_foo
-        CustomMatcher.called = true
+        CustomAssertion.called = true
       end
     end
 
     test "can add a module" do
-      Expectacular::Matcher.add CustomMatcher
+      Expectacular::Assertion.add CustomAssertion
       mock_expectation_for(Object.new) {|e| e.to.be_able_to_foo }
 
-      expect(CustomMatcher.called).to == true
+      expect(CustomAssertion.called).to == true
     end
 
     test "can add a block for simple extensions" do
-      Expectacular::Matcher.add do
+      Expectacular::Assertion.add do
         def be_able_to_bar
-          CustomMatcher.called = true
+          CustomAssertion.called = true
         end
       end
       mock_expectation_for(Object.new) {|e| e.to.be_able_to_bar }
 
-      expect(CustomMatcher.called).to == true
+      expect(CustomAssertion.called).to == true
     end
   end
 end

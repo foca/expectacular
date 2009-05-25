@@ -10,11 +10,11 @@ module Expectacular
     end
 
     def to
-      Matcher.new(@object, @test_case, true)
+      Assertion.new(@object, @test_case, true)
     end
 
     def not_to
-      Matcher.new(@object, @test_case, false)
+      Assertion.new(@object, @test_case, false)
     end
 
     private
@@ -24,7 +24,7 @@ module Expectacular
     end
   end
 
-  class Matcher
+  class Assertion
     instance_methods.each do |method|
       undef_method method unless method.to_s =~ /^__/
     end
