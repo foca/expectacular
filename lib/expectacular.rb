@@ -43,12 +43,12 @@ module Expectacular
 
     def method_missing(message, *args, &block)
       if message.to_s =~ /^be_(.*)$/
-        failure_message = "Expected #{@object.inspect} to be #{$1}"
-        failure_message  += " with #{args.join(", ")}" unless args.empty?
+        failure_message  = "Expected #{@object.inspect} to be #{$1}"
+        failure_message += " with #{args.join(", ")}" unless args.empty?
         assert! @object.send("#{$1}?", *args, &block), failure_message
       else
-        failure_message ||= "Expected #{@object.inspect} to #{message}"
-        failure_message  += " with #{args.join(", ")}" unless args.empty?
+        failure_message  = "Expected #{@object.inspect} to #{message}"
+        failure_message += " with #{args.join(", ")}" unless args.empty?
         assert! @object.send(message, *args, &block), failure_message
       end
     end
