@@ -12,6 +12,6 @@ class TestExpectacular < Test::Unit::TestCase
     expect(3).not_to.be > 5
     expect(5).not_to.be_zero
     expect(nil).to.be_nil
-    expect(1).to == 1
+    expect(1).to == 2
   end
 end

@@ -37,11 +37,8 @@ module Expectacular
       test_succeeded = (@positive_assertion && result) || 
         (!@positive_assertion && !result)
 
-      if test_succeeded
-        @test_case.send :add_assertion
-      else
-        @test_case.send :add_failure, failure_message
-      end
+      @test_case.send :add_failure, failure_message unless test_succeeded
+      @test_case.send :add_assertion
     end
 
     def method_missing(message, *args, &block)
