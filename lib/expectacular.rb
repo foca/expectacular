@@ -36,6 +36,8 @@ module Expectacular
       include *modules
     end
 
+    attr_reader :object
+
     def initialize(object, test_case, positive_assertion=true)
       @object = object
       @test_case = test_case
@@ -59,9 +61,9 @@ module Expectacular
     def method_missing(message, *args, &block)
       super
     rescue NoMethodError
-      failure_message  = "Expected #{@object.inspect} to #{message}"
+      failure_message  = "Expected #{object.inspect} to #{message}"
       failure_message += " with #{args.join(", ")}" unless args.empty?
-      assert @object.send(message, *args, &block), failure_message
+      assert object.send(message, *args, &block), failure_message
     end
   end
 
