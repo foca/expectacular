@@ -29,6 +29,11 @@ module Expectacular
       undef_method method unless method.to_s =~ /^__/
     end
 
+    def self.add(*modules, &block)
+      modules << Module.new(&block) if block
+      include *modules
+    end
+
     def initialize(object, test_case, positive_assertion=true)
       @object = object
       @test_case = test_case
