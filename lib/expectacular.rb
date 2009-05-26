@@ -64,5 +64,6 @@ module Expectacular
   end
 end
 
-require "expectacular/be_predicate"
 require "expectacular/be_a"
+require "expectacular/be_close"
+require "expectacular/be_predicate"
